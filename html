@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Velocidade da Internet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .results {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Teste de Velocidade da Internet</h1>
+    <button id="testButton">Testar Velocidade</button>
+    <div class="results" id="results"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/speedtest-net@1.0.0"></script>
+    <script>
+        document.getElementById('testButton').addEventListener('click', async function() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = 'Testando...';
+
+            try {
+                const st = new SpeedtestNet.Speedtest();
+                const results = await st.run();
+                
+                resultsDiv.innerHTML = `
+                    <p>Velocidade de Download: ${(results.download.bandwidth / 125000).toFixed(2)} Mbps</p>
+                    <p>Velocidade de Upload: ${(results.upload.bandwidth / 125000).toFixed(2)} Mbps</p>
+                    <p>Latência: ${results.ping.latency.toFixed(2)} ms</p>
+                `;
+            } catch (error) {
+                resultsDiv.innerHTML = 'Erro ao testar a velocidade. Tente novamente mais tarde.';
+            }
+        });
+    </script>
+</body>
+</html>
